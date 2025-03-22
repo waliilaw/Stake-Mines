@@ -1,8 +1,8 @@
-import MinesGame from "../components/mines-game"
+import MinesGame from "@/components/mines-game"
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-background">
+    <main className="min-h-screen flex flex-col items-center justify-center">
       <MinesGame />
     </main>
   )

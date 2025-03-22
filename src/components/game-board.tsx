@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from "react"
 import Tile from "./tile"
+import type { Position, Tile as TileType } from "@/lib/store/game-store"
 
 interface GameBoardProps {
-  grid: Array<Array<{ isMine: boolean; isRevealed: boolean; adjacentMines: number }>>
+  grid: TileType[][]
   onTileClick: (row: number, col: number) => void
   gameOver: boolean
-  lastRevealedTile: { row: number; col: number } | null
-  revealedTiles: Array<{ row: number; col: number }>
-  minePositions: Array<{ row: number; col: number }>
+  lastRevealedTile: Position | null
+  revealedTiles: Position[]
+  minePositions: Position[]
 }
 
 export default function GameBoard({
@@ -69,7 +70,7 @@ export default function GameBoard({
   }
 
   return (
-    <div className="w-full aspect-square">
+    <div className="w-full aspect-square game-board">
       <div className="grid grid-cols-5 gap-2 w-full h-full">
         {grid.map((row, rowIndex) =>
           row.map((tile, colIndex) => (

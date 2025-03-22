@@ -2,29 +2,18 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Minus, Plus, Bomb, Coins } from "lucide-react"
+import { Minus, Plus } from "lucide-react"
+import Image from "next/image"
+import { useGameConfig, useGameState } from "@/lib/store/game-store"
+import useSound from "@/lib/hooks/use-sound"
 
-interface BetPanelProps {
-  betAmount: number
-  setBetAmount: (amount: number) => void
-  minesCount: number
-  setMinesCount: (count: number) => void
-  isGameStarted: boolean
-  maxMines: number
-  minMines: number
-}
+export default function BetPanel() {
+  const { betAmount, minesCount, maxMines, minMines, setBetAmount, setMinesCount } = useGameConfig()
 
-export default function BetPanel({
-  betAmount,
-  setBetAmount,
-  minesCount,
-  setMinesCount,
-  isGameStarted,
-  maxMines,
-  minMines,
-}: BetPanelProps) {
+  const { isGameStarted } = useGameState()
   const [isCustomBetOpen, setIsCustomBetOpen] = useState(false)
   const [customBetInput, setCustomBetInput] = useState("")
+  const { playButtonSound } = useSound()
 
   // Predefined bet amounts
   const betOptions = [0.01, 0.05, 0.1, 0.5, 1]
@@ -33,6 +22,7 @@ export default function BetPanel({
   const handleBetAmountChange = (amount: number) => {
     if (isGameStarted) return
     setBetAmount(amount)
+    playButtonSound()
   }
 
   // Handle mines count change
@@ -42,6 +32,7 @@ export default function BetPanel({
     // Ensure mines count is within valid range
     const newCount = Math.max(minMines, Math.min(maxMines, count))
     setMinesCount(newCount)
+    playButtonSound()
   }
 
   // Handle custom bet input
@@ -51,15 +42,16 @@ export default function BetPanel({
       setBetAmount(amount)
       setIsCustomBetOpen(false)
       setCustomBetInput("")
+      playButtonSound()
     }
   }
 
   return (
-    <div className="bg-secondary rounded-lg p-4 shadow-md">
+    <div className="bg-card rounded-lg p-4 shadow-md neon-border">
       <div className="mb-4">
-        <h3 className="text-lg font-bold text-primary flex items-center gap-2 mb-2">
-          <Coins className="w-5 h-5" />
-          Bet Amount
+        <h3 className="text-lg font-bold text-primary flex items-center gap-2 mb-2 neon-text">
+          <Image src="/images/dollar.png" alt="$" width={20} height={20} className="w-5 h-5 object-contain" />
+          <span>Bet Amount</span>
         </h3>
 
         <div className="flex flex-wrap gap-2">
@@ -69,9 +61,9 @@ export default function BetPanel({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`
-                px-3 py-2 rounded-md text-sm font-medium
-                ${betAmount === amount ? "bg-accent text-primary" : "bg-primary/20 text-primary"}
-                ${isGameStarted ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/30"}
+                cartoon-button px-3 py-2 rounded-md text-sm font-medium
+                ${betAmount === amount ? "bg-accent text-primary" : "bg-muted text-primary"}
+                ${isGameStarted ? "opacity-50 cursor-not-allowed" : ""}
               `}
               onClick={() => handleBetAmountChange(amount)}
               disabled={isGameStarted}
@@ -84,8 +76,8 @@ export default function BetPanel({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={`
-              px-3 py-2 rounded-md text-sm font-medium bg-primary/20 text-primary
-              ${isGameStarted ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/30"}
+              cartoon-button px-3 py-2 rounded-md text-sm font-medium bg-muted text-primary
+              ${isGameStarted ? "opacity-50 cursor-not-allowed" : ""}
             `}
             onClick={() => setIsCustomBetOpen(true)}
             disabled={isGameStarted}
@@ -101,14 +93,14 @@ export default function BetPanel({
               value={customBetInput}
               onChange={(e) => setCustomBetInput(e.target.value)}
               placeholder="Enter amount"
-              className="flex-1 px-3 py-2 rounded-md bg-primary/10 text-primary border border-primary/20 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="flex-1 px-3 py-2 rounded-md bg-muted text-primary border border-primary/20 focus:outline-none focus:ring-2 focus:ring-accent"
               step="0.01"
               min="0.01"
             />
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-3 py-2 rounded-md bg-accent text-primary font-medium"
+              className="cartoon-button px-3 py-2 rounded-md bg-accent text-primary font-medium"
               onClick={handleCustomBetSubmit}
             >
               Set
@@ -118,9 +110,9 @@ export default function BetPanel({
       </div>
 
       <div>
-        <h3 className="text-lg font-bold text-primary flex items-center gap-2 mb-2">
-          <Bomb className="w-5 h-5" />
-          Mines Count
+        <h3 className="text-lg font-bold text-primary flex items-center gap-2 mb-2 neon-text">
+          <Image src="/images/bomb.png" alt="Bomb" width={20} height={20} className="w-5 h-5 object-contain" />
+          <span>Mines Count</span>
         </h3>
 
         <div className="flex items-center gap-2">
@@ -128,8 +120,8 @@ export default function BetPanel({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={`
-              w-10 h-10 rounded-md bg-primary/20 text-primary flex items-center justify-center
-              ${isGameStarted ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/30"}
+              cartoon-button w-10 h-10 rounded-md bg-muted text-primary flex items-center justify-center
+              ${isGameStarted ? "opacity-50 cursor-not-allowed" : ""}
             `}
             onClick={() => handleMinesCountChange(minesCount - 1)}
             disabled={isGameStarted || minesCount <= minMines}
@@ -137,16 +129,14 @@ export default function BetPanel({
             <Minus className="w-5 h-5" />
           </motion.button>
 
-          <div className="flex-1 text-center bg-primary/10 py-2 rounded-md font-bold text-primary">
-            {minesCount} Mines
-          </div>
+          <div className="flex-1 text-center bg-muted py-2 rounded-md font-bold text-primary">{minesCount} Mines</div>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={`
-              w-10 h-10 rounded-md bg-primary/20 text-primary flex items-center justify-center
-              ${isGameStarted ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/30"}
+              cartoon-button w-10 h-10 rounded-md bg-muted text-primary flex items-center justify-center
+              ${isGameStarted ? "opacity-50 cursor-not-allowed" : ""}
             `}
             onClick={() => handleMinesCountChange(minesCount + 1)}
             disabled={isGameStarted || minesCount >= maxMines}
@@ -162,9 +152,9 @@ export default function BetPanel({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`
-                px-2 py-1 rounded-md text-xs font-medium
-                ${minesCount === count ? "bg-accent text-primary" : "bg-primary/20 text-primary"}
-                ${isGameStarted ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/30"}
+                cartoon-button px-2 py-1 rounded-md text-xs font-medium
+                ${minesCount === count ? "bg-accent text-primary" : "bg-muted text-primary"}
+                ${isGameStarted ? "opacity-50 cursor-not-allowed" : ""}
               `}
               onClick={() => handleMinesCountChange(count)}
               disabled={isGameStarted}

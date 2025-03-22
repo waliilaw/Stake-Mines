@@ -1,55 +1,47 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Bomb, Diamond, Trophy, TrendingUp } from "lucide-react"
+import Image from "next/image"
+import { Trophy, TrendingUp } from "lucide-react"
+import { useGameState } from "@/lib/store/game-store"
+import { formatCurrency, calculateMultiplier } from "@/lib/game-utils"
 
-interface ScoreboardProps {
-  betAmount: number
-  winnings: number
-  potentialWinnings: number
-  minesCount: number
-  revealedCount: number
-  safeTiles: number
-  winProbability: number
-}
+export default function Scoreboard() {
+  const { betAmount, winnings, potentialWinnings, minesCount, revealedCount, safeTiles, winProbability } =
+    useGameState()
 
-export default function Scoreboard({
-  betAmount,
-  winnings,
-  potentialWinnings,
-  minesCount,
-  revealedCount,
-  safeTiles,
-  winProbability,
-}: ScoreboardProps) {
   return (
-    <div className="bg-secondary rounded-lg p-4 shadow-md">
-      <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
+    <div className="bg-card rounded-lg p-4 shadow-md neon-border">
+      <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2 neon-text">
         <Trophy className="w-5 h-5" />
         Scoreboard
       </h2>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-primary/20 rounded-lg p-3">
-          <div className="text-sm text-primary/70 mb-1">Bet Amount</div>
-          <div className="text-xl font-bold text-primary">{betAmount.toFixed(2)} ETH</div>
+        <div className="bg-muted rounded-lg p-3">
+          <div className="text-sm text-muted-foreground mb-1">Bet Amount</div>
+          <div className="text-xl font-bold text-primary flex items-center gap-1">
+            <Image src="/images/dollar.png" alt="$" width={20} height={20} className="w-5 h-5 object-contain" />
+            {formatCurrency(betAmount)} ETH
+          </div>
         </div>
 
-        <div className="bg-primary/20 rounded-lg p-3">
-          <div className="text-sm text-primary/70 mb-1">Current Winnings</div>
+        <div className="bg-muted rounded-lg p-3">
+          <div className="text-sm text-muted-foreground mb-1">Current Winnings</div>
           <motion.div
             key={winnings}
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
-            className="text-xl font-bold text-primary"
+            className="text-xl font-bold text-primary flex items-center gap-1"
           >
-            {winnings.toFixed(2)} ETH
+            <Image src="/images/dollar.png" alt="$" width={20} height={20} className="w-5 h-5 object-contain" />
+            {formatCurrency(winnings)} ETH
           </motion.div>
         </div>
 
-        <div className="bg-primary/20 rounded-lg p-3">
-          <div className="text-sm text-primary/70 mb-1 flex items-center gap-1">
-            <Diamond className="w-4 h-4" />
+        <div className="bg-muted rounded-lg p-3">
+          <div className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
+            <Image src="/images/diamond.png" alt="Diamond" width={16} height={16} className="w-4 h-4 object-contain" />
             <span>Safe Tiles</span>
           </div>
           <div className="text-xl font-bold text-primary">
@@ -57,16 +49,16 @@ export default function Scoreboard({
           </div>
         </div>
 
-        <div className="bg-primary/20 rounded-lg p-3">
-          <div className="text-sm text-primary/70 mb-1 flex items-center gap-1">
-            <Bomb className="w-4 h-4" />
+        <div className="bg-muted rounded-lg p-3">
+          <div className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
+            <Image src="/images/bomb.png" alt="Bomb" width={16} height={16} className="w-4 h-4 object-contain" />
             <span>Mines</span>
           </div>
           <div className="text-xl font-bold text-primary">{minesCount}</div>
         </div>
 
-        <div className="bg-primary/20 rounded-lg p-3 col-span-2">
-          <div className="text-sm text-primary/70 mb-1 flex items-center gap-1">
+        <div className="bg-muted rounded-lg p-3 col-span-2">
+          <div className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
             <TrendingUp className="w-4 h-4" />
             <span>Next Tile Potential</span>
           </div>
@@ -74,9 +66,13 @@ export default function Scoreboard({
             key={potentialWinnings}
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
-            className="text-xl font-bold text-primary"
+            className="text-xl font-bold text-primary flex items-center gap-1"
           >
-            {potentialWinnings.toFixed(2)} ETH
+            <Image src="/images/dollar.png" alt="$" width={20} height={20} className="w-5 h-5 object-contain" />
+            {formatCurrency(potentialWinnings)} ETH
+            <span className="text-sm font-normal text-accent ml-2">
+              ({calculateMultiplier(betAmount, potentialWinnings)})
+            </span>
           </motion.div>
         </div>
       </div>

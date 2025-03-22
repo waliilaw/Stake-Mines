@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Bomb, Diamond } from "lucide-react"
+import Image from "next/image"
+import useSound from "@/lib/hooks/use-sound"
 
 interface TileProps {
   isMine: boolean
@@ -32,6 +33,7 @@ export default function Tile({
   const [isHovered, setIsHovered] = useState(false)
   const [showExplosion, setShowExplosion] = useState(false)
   const [showSparkle, setShowSparkle] = useState(false)
+  const { playHoverSound } = useSound()
 
   // Handle explosion animation
   useEffect(() => {
@@ -64,10 +66,16 @@ export default function Tile({
     }
 
     if (isMine) {
-      return "bg-red-500"
+      return "tile-mine"
     }
 
-    return "bg-accent"
+    return "tile-revealed"
+  }
+
+  // Handle hover sound
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    playHoverSound()
   }
 
   // Determine tile content
@@ -84,7 +92,7 @@ export default function Tile({
           transition={{ type: "spring", stiffness: 300, damping: 15, delay: isInRevealQueue ? revealDelay : 0 }}
           className="relative"
         >
-          <Bomb className="w-8 h-8 text-black" />
+          <Image src="/images/bomb.png" alt="Bomb" width={40} height={40} className="w-10 h-10 object-contain" />
           {showExplosion && (
             <motion.div
               initial={{ scale: 0, opacity: 1 }}
@@ -106,7 +114,7 @@ export default function Tile({
         transition={{ type: "spring", stiffness: 300, damping: 15 }}
         className="relative"
       >
-        <Diamond className="w-8 h-8 text-primary" />
+        <Image src="/images/diamond.png" alt="Diamond" width={40} height={40} className="w-10 h-10 object-contain" />
         {showSparkle && (
           <motion.div
             initial={{ scale: 0, opacity: 1 }}
@@ -129,12 +137,12 @@ export default function Tile({
       animate={isInRevealQueue ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
       transition={{ delay: isInRevealQueue ? revealDelay : 0 }}
       className={`
-        aspect-square rounded-lg shadow-md flex items-center justify-center cursor-pointer
+        tile aspect-square rounded-lg shadow-md flex items-center justify-center cursor-pointer
         ${getTileBackgroundColor()}
         ${isRevealed ? "" : "hover:shadow-lg transition-all duration-200"}
         ${isLastRevealed ? "ring-4 ring-white" : ""}
       `}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setIsHovered(false)}
       onClick={isRevealed ? undefined : onClick}
     >

@@ -2,71 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap");
+
 :root {
-  --background: 80, 100%, 95%;
-  --foreground: 222.2, 84%, 4.9%;
+  /* Neon theme colors */
+  --background: 220, 100%, 10%;
+  --foreground: 0, 0%, 100%;
 
-  --card: 0, 0%, 100%;
-  --card-foreground: 222.2, 84%, 4.9%;
+  --card: 220, 70%, 13%;
+  --card-foreground: 0, 0%, 100%;
 
-  --popover: 0, 0%, 100%;
-  --popover-foreground: 222.2, 84%, 4.9%;
+  --popover: 220, 70%, 13%;
+  --popover-foreground: 0, 0%, 100%;
 
-  --primary: 167, 33%, 40%;
-  --primary-foreground: 210, 40%, 98%;
+  /* Neon green primary */
+  --primary: 135, 100%, 50%;
+  --primary-foreground: 0, 0%, 0%;
 
-  --secondary: 179, 22%, 84%;
-  --secondary-foreground: 167, 33%, 40%;
+  /* Darker neon green */
+  --secondary: 135, 80%, 20%;
+  --secondary-foreground: 135, 100%, 50%;
 
-  --muted: 210, 40%, 96.1%;
-  --muted-foreground: 215.4, 16.3%, 46.9%;
+  --muted: 220, 50%, 20%;
+  --muted-foreground: 220, 20%, 80%;
 
-  --accent: 251, 100%, 92%;
-  --accent-foreground: 167, 33%, 40%;
+  /* Neon pink accent */
+  --accent: 320, 100%, 60%;
+  --accent-foreground: 0, 0%, 100%;
 
-  --destructive: 0, 84.2%, 60.2%;
-  --destructive-foreground: 210, 40%, 98%;
+  --destructive: 0, 100%, 50%;
+  --destructive-foreground: 0, 0%, 100%;
 
-  --border: 214.3, 31.8%, 91.4%;
-  --input: 214.3, 31.8%, 91.4%;
-  --ring: 222.2, 84%, 4.9%;
+  --border: 220, 50%, 20%;
+  --input: 220, 50%, 20%;
+  --ring: 135, 100%, 50%;
 
-  --radius: 0.5rem;
+  --radius: 1rem;
+
+  /* Game specific colors */
+  --game-bg-start: 220, 100%, 10%;
+  --game-bg-end: 240, 100%, 15%;
+  --tile-safe: 135, 100%, 50%;
+  --tile-mine: 0, 100%, 50%;
+  --tile-hover: 200, 100%, 60%;
+  --glow-primary: 135, 100%, 50%;
+  --glow-secondary: 320, 100%, 60%;
 }
 
 .dark {
-  --background: 222.2, 84%, 4.9%;
-  --foreground: 210, 40%, 98%;
+  --background: 220, 100%, 10%;
+  --foreground: 0, 0%, 100%;
 
-  --card: 222.2, 84%, 4.9%;
-  --card-foreground: 210, 40%, 98%;
+  --card: 220, 70%, 13%;
+  --card-foreground: 0, 0%, 100%;
 
-  --popover: 222.2, 84%, 4.9%;
-  --popover-foreground: 210, 40%, 98%;
+  --popover: 220, 70%, 13%;
+  --popover-foreground: 0, 0%, 100%;
 
-  --primary: 167, 33%, 40%;
-  --primary-foreground: 210, 40%, 98%;
+  --primary: 135, 100%, 50%;
+  --primary-foreground: 0, 0%, 0%;
 
-  --secondary: 217.2, 32.6%, 17.5%;
-  --secondary-foreground: 210, 40%, 98%;
+  --secondary: 135, 80%, 20%;
+  --secondary-foreground: 135, 100%, 50%;
 
-  --muted: 217.2, 32.6%, 17.5%;
-  --muted-foreground: 215, 20.2%, 65.1%;
+  --muted: 220, 50%, 20%;
+  --muted-foreground: 220, 20%, 80%;
 
-  --accent: 217.2, 32.6%, 17.5%;
-  --accent-foreground: 210, 40%, 98%;
+  --accent: 320, 100%, 60%;
+  --accent-foreground: 0, 0%, 100%;
 
-  --destructive: 0, 62.8%, 30.6%;
-  --destructive-foreground: 210, 40%, 98%;
+  --destructive: 0, 100%, 50%;
+  --destructive-foreground: 0, 0%, 100%;
 
-  --border: 217.2, 32.6%, 17.5%;
-  --input: 217.2, 32.6%, 17.5%;
-  --ring: 212.7, 26.8%, 83.9%;
+  --border: 220, 50%, 20%;
+  --input: 220, 50%, 20%;
+  --ring: 135, 100%, 50%;
 }
 
 body {
-  background-color: hsl(var(--background));
+  background: linear-gradient(135deg, hsl(var(--game-bg-start)), hsl(var(--game-bg-end)));
   color: hsl(var(--foreground));
+  font-family: "Fredoka", sans-serif;
+  min-height: 100vh;
 }
 
 @layer base {
@@ -76,5 +93,206 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Neon text effect */
+.neon-text {
+  text-shadow: 0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary)), 0 0 40px
+    hsl(var(--primary) / 0.8), 0 0 80px hsl(var(--primary) / 0.6);
+}
+
+.neon-text-pink {
+  text-shadow: 0 0 5px hsl(var(--accent)), 0 0 10px hsl(var(--accent)), 0 0 20px hsl(var(--accent)), 0 0 40px
+    hsl(var(--accent) / 0.8), 0 0 80px hsl(var(--accent) / 0.6);
+}
+
+/* Neon border effect */
+.neon-border {
+  box-shadow: 0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary)), inset 0 0 5px hsl(var(--primary)), inset 0 0
+    10px hsl(var(--primary) / 0.5);
+  border: 2px solid hsl(var(--primary));
+}
+
+.neon-border-pink {
+  box-shadow: 0 0 5px hsl(var(--accent)), 0 0 10px hsl(var(--accent)), inset 0 0 5px hsl(var(--accent)), inset 0 0 10px
+    hsl(var(--accent) / 0.5);
+  border: 2px solid hsl(var(--accent));
+}
+
+/* Cartoon button styles */
+.cartoon-button {
+  position: relative;
+  border-radius: var(--radius);
+  background: linear-gradient(to bottom, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+  color: hsl(var(--primary-foreground));
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  box-shadow: 0 0.2rem 0 0 rgba(0, 0, 0, 0.3), 0 0 0.5rem rgba(0, 0, 0, 0.2), 0 0 1rem hsl(var(--primary) / 0.5), inset
+    0 -0.2rem 0 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s ease;
+  transform-style: preserve-3d;
+}
+
+.cartoon-button:active {
+  transform: translateY(0.2rem);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3), 0 0 0.5rem rgba(0, 0, 0, 0.2), 0 0 1rem hsl(var(--primary) / 0.5), inset 0 0 0
+    0 rgba(0, 0, 0, 0.2);
+}
+
+.cartoon-button-pink {
+  background: linear-gradient(to bottom, hsl(var(--accent)), hsl(var(--accent) / 0.8));
+  box-shadow: 0 0.2rem 0 0 rgba(0, 0, 0, 0.3), 0 0 0.5rem rgba(0, 0, 0, 0.2), 0 0 1rem hsl(var(--accent) / 0.5), inset 0
+    -0.2rem 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.cartoon-button-pink:active {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3), 0 0 0.5rem rgba(0, 0, 0, 0.2), 0 0 1rem hsl(var(--accent) / 0.5), inset 0 0 0
+    0 rgba(0, 0, 0, 0.2);
+}
+
+/* Game board styles */
+.game-board {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.tile {
+  position: relative;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary) / 0.7));
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.tile::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.tile:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px hsl(var(--tile-hover)), 0 0 20px hsl(var(--tile-hover) / 0.5);
+}
+
+.tile-revealed {
+  background: linear-gradient(135deg, hsl(var(--tile-safe)), hsl(var(--tile-safe) / 0.7));
+}
+
+.tile-mine {
+  background: linear-gradient(135deg, hsl(var(--tile-mine)), hsl(var(--tile-mine) / 0.7));
+}
+
+/* Glow animation */
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px hsl(var(--glow-primary)), 0 0 10px hsl(var(--glow-primary)), 0 0 15px
+      hsl(var(--glow-primary) / 0.8);
+  }
+  50% {
+    box-shadow: 0 0 10px hsl(var(--glow-primary)), 0 0 20px hsl(var(--glow-primary)), 0 0 30px
+      hsl(var(--glow-primary) / 0.8);
+  }
+}
+
+.glow-effect {
+  animation: glow 2s infinite;
+}
+
+@keyframes glow-pink {
+  0%,
+  100% {
+    box-shadow: 0 0 5px hsl(var(--glow-secondary)), 0 0 10px hsl(var(--glow-secondary)), 0 0 15px
+      hsl(var(--glow-secondary) / 0.8);
+  }
+  50% {
+    box-shadow: 0 0 10px hsl(var(--glow-secondary)), 0 0 20px hsl(var(--glow-secondary)), 0 0 30px
+      hsl(var(--glow-secondary) / 0.8);
+  }
+}
+
+.glow-effect-pink {
+  animation: glow-pink 2s infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Shake animation */
+@keyframes shake {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+}
+
+.shake-animation {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.8);
 }
 
